@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.RepositoryDao">
+    <resultMap id="RepositoryMap" type="pinksmile.database.domain.Repositorys">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="name" javaType="String" jdbcType="VARCHAR" property="name"/>
+        <result column="details" javaType="String" jdbcType="VARCHAR" property="details"/>
+    </resultMap>
+
+    <!--获取所有仓库信息-->
+    <select id="getAllRepositorys" resultMap="RepositoryMap">
+        select * from repository
+    </select>
+
+    <!--添加仓库信息-->
+    <insert id="addRepository" parameterType="pinksmile.database.domain.Repositorys">
+        insert into repository (name, details)
+        values (#{name}, #{details})
+    </insert>
+
+    <!--通过仓库id获取仓库信息-->
+    <select id="getRepositoryById" resultMap="RepositoryMap">
+        select
+        id, name, details
+        from repository
+        where id = #{id}
+    </select>
+
+    <!--通过仓库名获取仓库信息-->
+    <select id="getOneRepository" resultMap="RepositoryMap">
+        select id, name, details
+        from repository
+        where name = #{name}
+    </select>
+
+    <!--修改仓库信息-->
+    <update id="updateRepository" parameterType="pinksmile.database.domain.Repositorys">
+        update repository set
+        name = #{name},
+        details = #{details}
+        where id = #{id}
+    </update>
+
+    <!--删除一个仓库-->
+    <delete id="deleteOneRepository">
+        delete from repository where id = #{id}
+    </delete>
+
+    <!--删除多个仓库-->
+    <delete id="deleteManyRepositorys">
+        delete from repository where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--通过仓库名查找仓库-->
+    <select id="getRepositoryByName" resultMap="RepositoryMap">
+        select id, name, details from repository where name = #{name}
+    </select>
+</mapper>

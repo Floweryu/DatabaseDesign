@@ -1,0 +1,163 @@
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>企业库存管理系统</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport"
+              content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+        <meta http-equiv="Cache-Control" content="no-siteapp"/>
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/font.css')}">
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/xadmin.css')}">
+        <script th:src="${urls.getForLookupPath('/lib/layui/layui.js')}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="${urls.getForLookupPath('/js/xadmin.js')}"></script>
+        <script>
+            var is_remember = false;        // 关闭tab记忆
+        </script>
+    </head>
+    <body class="userhome">
+        <!-- 顶部开始 -->
+        <div class="container">
+            <div class="logo">
+                <a>用户管理页面</a></div>
+            <div class="left_open">
+                <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
+            </div>
+            <ul shiro:hasPermission="A" class="layui-nav left fast-add" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">+新增</a>
+                    <dl class="layui-nav-child">
+                        <!-- 二级菜单 -->
+                        <dd>
+                            <a onclick="xadmin.open('添加客户','usermanage/toCustomer',520,550)">
+                                <i class="iconfont">&#xe6b8;</i>添加客户信息</a>
+                        </dd>
+                        <dd>
+                            <a onclick="xadmin.open('添加仓库','usermanage/toRepository',520,550)">
+                                <i class="iconfont">&#xe723;</i>添加仓库信息</a>
+                        </dd>
+                        <dd>
+                            <a onclick="xadmin.open('添加产品','usermanage/toProduct',600,400)">
+                                <i class="iconfont">&#xe698;</i>添加产品信息</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav right" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">admin</a>
+                    <dl class="layui-nav-child">
+                        <!-- 二级菜单 -->
+                        <dd>
+                            <a onclick="xadmin.open('个人博客','https://blog.csdn.net/weixin_43207025')">个人博客</a></dd>
+                        <dd>
+                            <a onclick="xadmin.open('GitHub','https://github.com/Pink-Smile')">GitHub</a></dd>
+                        <dd>
+                            <a th:href="@{/logout}">退出</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item to-index">
+                    <a href="https://github.com/Pink-Smile">Pink-Smile</a></li>
+            </ul>
+        </div>
+        <!-- 顶部结束 -->
+        <!-- 中部开始 -->
+        <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+            <div id="side-nav">
+                <ul id="nav">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="客户管理">&#xe6b8;</i>
+                            <cite>客户管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('客户信息总览','usermanage/customerList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>客户信息总览</cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="仓库管理">&#xe723;</i>
+                            <cite>仓库管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('仓库信息总览','usermanage/repositoryList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>仓库信息总览</cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="产品管理">&#xe698;</i>
+                            <cite>产品管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('产品信息总览','usermanage/productList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>产品信息总览</cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="库存管理">&#xe70c;</i>
+                            <cite>库存管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('库存简略信息总览','usermanage/stocksList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>库存简略信息总览</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('库存详细信息总览','usermanage/stockList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>库存详细信息总览</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('入库记录总览','usermanage/instockList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>入库记录总览</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('出库记录总览','usermanage/outstockList')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>出库记录总览</cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- <div class="x-slide_left"></div> -->
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+            <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+                <ul class="layui-tab-title">
+                    <li class="home">
+                        <i class="layui-icon">&#xe68e;</i>我的桌面
+                    </li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <iframe src='welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                    </div>
+                </div>
+                <div id="tab_show"></div>
+            </div>
+        </div>
+        <div class="page-content-bg"></div>
+        <style id="theme_style"></style>
+        <!-- 右侧主体结束 -->
+        <!-- 中部结束 -->
+    </body>
+</html>

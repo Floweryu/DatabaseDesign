@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>编辑客户信息</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport"
+              content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/font.css')}">
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/xadmin.css')}">
+        <script th:src="${urls.getForLookupPath('/lib/layui/layui.js')}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="${urls.getForLookupPath('/js/xadmin.js')}"></script>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                    <div>
+                        <input hidden th:name="id" th:value="${editCustomer.id}" type="text">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>客户姓名</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" id="name" lay-verify="name" name="name"
+                                   placeholder="请输入客户姓名"
+                                   required="" th:value="${editCustomer.name}" type="text">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red">*</span>客户姓名可能不唯一
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>客户类型</label>
+                        <div class="layui-input-inline">
+                            <select name="type">
+                                <option th:field="${editCustomer.type}" value="普通客户">普通客户</option>
+                                <option th:field="${editCustomer.type}" value="贵宾">贵宾</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>联系人</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" id="linkpeople" lay-verify="linkpeople"
+                                   name="linkpeople"
+                                   placeholder="请输入联系人"
+                                   required="" th:value="${editCustomer.linkpeople}" type="text">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>联系电话</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" id="phone" lay-verify="phone" name="phone"
+                                   placeholder="请输入联系电话"
+                                   required="" th:value="${editCustomer.phone}" type="text">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>邮箱地址</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" id="email" lay-verify="email" name="email"
+                                   placeholder="请输入邮箱地址"
+                                   required="" th:value="${editCustomer.email}" type="text">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>备注</label>
+                        <div class="layui-input-block">
+                            <textarea id="remark" name="remark" type="text" lay-verify="remark" autocomplete="off"
+                                      th:text="${editCustomer.remark}" class="layui-textarea"
+                                      placeholder="请输入备注"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button lay-filter="edit" lay-submit="" class="layui-btn layui-btn-fluid">确认修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            layui.use(['form', 'layer'],
+                function () {
+                    $ = layui.jquery;
+                    var form = layui.form,
+                        layer = layui.layer, SendData;
+
+                    //自定义验证规则
+                    form.verify({
+                        name: function (value) {
+                            if (value.length === 0) {
+                                return '客户姓名不能为空';
+                            }else if(value.length > 10){
+                                return '客户姓名长度不能超过10';
+                            }
+                        },
+                        linkpeople: function (value) {
+                            if (value.length === 0) {
+                                return '联系人不能为空';
+                            }else if(value.length > 10){
+                                return '联系人姓名长度不能超过10';
+                            }
+                        },
+                        phone: function (value) {
+                            var reg=/^1\d{10}$/;
+                            if (!reg.test(value)){
+                                return '联系电话格式错误';
+                            }
+                        },
+                        email: function (value) {
+                            var reg=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                            if(!reg.test(value)){
+                                return '邮箱地址格式错误';
+                            }
+                        },
+                        remark: function (value) {
+                            if (value.length === 0) {
+                                return '备注一下呗';
+                            }
+                        }
+                    });
+
+                    //监听提交
+                    form.on('submit(edit)', function (data) {
+                        console.log(data);
+                        //发异步
+                        SendData = $.ajax({
+                            type: "POST",
+                            url: "/usermanage/updateCustomer",
+                            data: {
+                                id: data.field.id,
+                                name: data.field.name,
+                                type: data.field.type,
+                                linkpeople: data.field.linkpeople,
+                                phone: data.field.phone,
+                                email: data.field.email,
+                                remark: data.field.remark,
+                            },
+                            success: function () {
+                                layer.alert("修改成功!", {
+                                        icon: 6
+                                    },
+                                    function () {
+                                        xadmin.father_reload();
+                                        xadmin.close();
+                                    });
+                            },
+                            error: function () {
+                                layer.alert('修改失败！', {icon: 5});
+                            }
+                        });
+                        // 等待 ajax 执行完毕
+                        $.when(SendData).done(function (value) {
+
+                        });
+                        return false;
+                    });
+
+                });
+        </script>
+    </body>
+
+</html>

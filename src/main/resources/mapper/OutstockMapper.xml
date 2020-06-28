@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.OutstockDao">
+    <resultMap id="OutstockMap" type="pinksmile.database.domain.Outstock">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="pid" javaType="Integer" jdbcType="INTEGER" property="pid"/>
+        <result column="rid" javaType="Integer" jdbcType="INTEGER" property="rid"/>
+        <result column="amount" javaType="Integer" jdbcType="INTEGER" property="amount"/>
+        <result column="datetime" javaType="Date" jdbcType="DATE" property="datetime"/>
+        <result column="name" javaType="String" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <!--获得出库所有记录-->
+    <select id="getAllOutstocks" resultMap="OutstockMap">
+        select * from outstock
+    </select>
+
+    <select id="getOutstockById" resultMap="OutstockMap">
+        select
+            id, pid, rid, amount, datetime, name
+        from outstock
+        where id=#{id}
+    </select>
+
+    <update id="updateOutstock" parameterType="pinksmile.database.domain.Outstock">
+        update outstock set
+                            id = #{id},
+                            pid = #{pid},
+                            rid = #{rid},
+                            amount = #{amount},
+                            datetime = #{datetime},
+                            name = #{name}
+        where id = #{id}
+    </update>
+
+    <insert id="addOutstock" parameterType="pinksmile.database.domain.Outstock">
+        insert into outstock (pid, rid, amount, datetime, name)
+        values (#{pid}, #{rid}, #{amount}, #{datetime}, #{name})
+    </insert>
+
+    <select id="getOutstockByPid" resultMap="OutstockMap">
+        select * from outstock where pid=#{pid}
+    </select>
+
+    <select id="getOutstockByRid" resultMap="OutstockMap">
+        select * from outstock where rid=#{rid}
+    </select>
+
+    <select id="getOutstockByTime" resultMap="OutstockMap">
+        select * from outstock where datetime=#{time}
+    </select>
+
+    <delete id="deleteManyOutstocks">
+        delete from outstock where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOneOutstock">
+        delete from outstock where id = #{id}
+    </delete>
+
+</mapper>

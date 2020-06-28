@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/font.css')}">
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/xadmin.css')}">
+        <script th:src="${urls.getForLookupPath('/lib/layui/layui.js')}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="${urls.getForLookupPath('/js/xadmin.js')}"></script>
+    </head>
+    <body class="welcome">
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">欢迎管理员：
+                                <span class="x-red">张俊峰 ！</span>
+                                <span id="datetime">
+                                    <script>
+                                        setInterval("document.getElementById('datetime').innerHTML=new Date().toLocaleString();", 1000);
+                                    </script>
+                                </span>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-sm6 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">用户管理</span></div>
+                        <div class="layui-card-body  ">
+                            <p class="layuiadmin-big-font">添加用户</p>
+                            <p class="layuiadmin-big-font">修改用户</p>
+                            <p class="layuiadmin-big-font">删除用户</p>
+                            <p class="layuiadmin-big-font">查询用户</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">客户管理</span></div>
+                        <div class="layui-card-body  ">
+                            <p class="layuiadmin-big-font">添加客户</p>
+                            <p class="layuiadmin-big-font">修改客户</p>
+                            <p class="layuiadmin-big-font">删除客户</p>
+                            <p class="layuiadmin-big-font">查询客户</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">仓库管理</span></div>
+                        <div class="layui-card-body  ">
+                            <p class="layuiadmin-big-font">添加仓库</p>
+                            <p class="layuiadmin-big-font">修改仓库</p>
+                            <p class="layuiadmin-big-font">删除仓库</p>
+                            <p class="layuiadmin-big-font">查询仓库</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">产品管理</span></div>
+                        <div class="layui-card-body  ">
+                            <p class="layuiadmin-big-font">添加产品</p>
+                            <p class="layuiadmin-big-font">修改产品</p>
+                            <p class="layuiadmin-big-font">删除产品</p>
+                            <p class="layuiadmin-big-font">查询产品</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">库存管理</span></div>
+                        <div class="layui-card-body  ">
+                            <p class="layuiadmin-big-font">添加库存</p>
+                            <p class="layuiadmin-big-font">删除库存</p>
+                            <p class="layuiadmin-big-font">修改库存</p>
+                            <p class="layuiadmin-big-font">查询库存</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm6 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan layuiadmin-badge">出入库存管理</span></div>
+                        <div class="layui-card-body  ">
+                            <p class="layuiadmin-big-font">添加入库记录</p>
+                            <p class="layuiadmin-big-font">添加出库记录</p>
+                            <p class="layuiadmin-big-font">编辑入库记录</p>
+                            <p class="layuiadmin-big-font">编辑出库记录</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">系统信息</div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table">
+                                <tbody>
+                                    <tr>
+                                        <th>Spring Boot版本</th>
+                                        <td>2.2.6</td></tr>
+                                    <tr>
+                                        <th>前端UI</th>
+                                        <td>layui-2.x + X-admin2.2</td>
+                                    </tr>
+                                    <tr>
+                                        <th>前后端数据传送</th>
+                                        <td>ajax + thymeleaf</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Java 版本</th>
+                                        <td>jdk-13.0.2</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Maven版本</th>
+                                        <td>apache-maven-3.6.2</td>
+                                    </tr>
+                                    <tr>
+                                        <th>MYSQL版本</th>
+                                        <td>MySQL  Ver 8.0.17 for Win64 on x86_64</td>
+                                    </tr>
+                                    <tr>
+                                        <th>操作系统</th>
+                                        <td>Windows 10</td>
+                                    </tr>
+                                    <tr>
+                                        <th>数据库操作</th>
+                                        <td>Mybatis-2.0.0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>权限控制</th>
+                                        <td>Shiro</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">开发团队</div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table">
+                                <tbody>
+                                    <tr>
+                                        <th>版权所有</th>
+                                        <td>Pink-Smile
+                                            <a href="https://blog.csdn.net/weixin_43207025" target="_blank">访问官网</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>开发者</th>
+                                        <td>张俊峰(im.zhangjunfeng@qq.com)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <style id="welcome_style"></style>
+                <div class="layui-col-md12">
+                    <blockquote class="layui-elem-quote layui-quote-nm">感谢谷歌,感谢百度，感谢老哥,本系统由张俊峰个人完成开发。</blockquote></div>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

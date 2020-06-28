@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.CustomerDao">
+    <resultMap id="CustomerMap" type="pinksmile.database.domain.Customer">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="name" javaType="String" jdbcType="VARCHAR" property="name"/>
+        <result column="type" javaType="String" jdbcType="VARCHAR" property="type"/>
+        <result column="linkpeople" javaType="String" jdbcType="VARCHAR" property="linkpeople"/>
+        <result column="phone" javaType="String" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" javaType="String" jdbcType="VARCHAR" property="email"/>
+        <result column="remark" javaType="String" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <!--获取所有客户信息-->
+    <select id="getAllCustomers" resultMap="CustomerMap">
+        select * from customer
+    </select>
+
+    <!--添加客户信息-->
+    <insert id="addCustomer" parameterType="pinksmile.database.domain.Customer">
+        insert into customer (name, type, linkpeople, phone, email, remark)
+        VALUES (#{name}, #{type}, #{linkpeople}, #{phone}, #{email}, #{remark})
+    </insert>
+
+    <!--通过id获得客户信息-->
+    <select id="getCustomerById" resultMap="CustomerMap">
+        select
+        id, name, type, linkpeople, phone, email, remark
+        from customer
+        where id = #{id}
+    </select>
+
+    <!--修改客户信息-->
+    <update id="updateCustomer" parameterType="pinksmile.database.domain.Customer">
+        update customer set
+        name = #{name},
+        type = #{type},
+        linkpeople = #{linkpeople},
+        phone = #{phone},
+        email = #{email},
+        remark = #{remark}
+        where id = #{id}
+    </update>
+
+    <!--删除一个客户-->
+    <delete id="deleteOneCustomer">
+        delete from customer
+        where id = #{id}
+    </delete>
+
+    <!--删除多个客户-->
+    <delete id="deleteCustomers">
+        delete from customer where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--通多客户名称查询客户-->
+    <select id="getCustomerByName" resultMap="CustomerMap">
+        select * from customer where name = #{name}
+    </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--author PinkSmile 用户表-->
+<mapper namespace="pinksmile.database.dao.UserDao">
+    <resultMap id="UserMap" type="pinksmile.database.domain.User">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="nickname" javaType="String" jdbcType="VARCHAR" property="nickname"/>
+        <result column="username" javaType="String" jdbcType="VARCHAR" property="username"/>
+        <result column="password" javaType="String" jdbcType="VARCHAR" property="password"/>
+        <result column="permission" javaType="String" jdbcType="VARCHAR" property="permission"/>
+        <result column="role" javaType="String" jdbcType="VARCHAR" property="role"/>
+    </resultMap>
+
+    <!--通过用户id获得用户角色-->
+    <select id="getUserRoleByID" resultType="String">
+        select role from user where id = #{userId}
+    </select>
+
+    <!--通过用户名查询用户, 返回是列表-->
+    <select id="getUserByUsername" resultMap="UserMap">
+        select * from user where username = #{username}
+    </select>
+
+    <!--通过用户名查询用户, 返回是单个用户-->
+    <select id="queryByName" resultMap="UserMap">
+        select id, nickname, username, password, permission, role
+        from user
+        where username = #{username}
+    </select>
+
+    <!--通过用户id获得用户信息-->
+    <select id="getAllById" resultMap="UserMap">
+        select
+        id, username, nickname, password, permission, role
+        from user
+        where id = #{id}
+    </select>
+
+    <!--修改用户信息-->
+    <update id="updateUser" parameterType="pinksmile.database.domain.User">
+        update user set
+        nickname = #{nickname},
+        username = #{username},
+        password = #{password},
+        permission = #{permission},
+        role = #{role}
+        where id = #{id}
+    </update>
+    <!--根据用户信息添加用户-->
+    <insert id="addUser" parameterType="pinksmile.database.domain.User">
+        insert into user (nickname, username, password, permission, role)
+        values (#{nickname}, #{username}, #{password}, #{permission}, #{role})
+    </insert>
+
+    <!--查找表中所有内容-->
+    <select id="getAllUsers" resultType="pinksmile.database.domain.User">
+        select * from user
+    </select>
+
+    <!--通过主键删除用户-->
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+
+    <!--删除多个用户-->
+    <delete id="deleteManyUsers">
+        delete from user where id in 
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

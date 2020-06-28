@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.ProductDao">
+    <resultMap id="ProductMap" type="pinksmile.database.domain.Product">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="name" javaType="String" jdbcType="VARCHAR" property="name"/>
+        <result column="specification" javaType="String" jdbcType="VARCHAR" property="specification"/>
+        <result column="price" javaType="float" jdbcType="FLOAT" property="price"/>
+        <result column="upper" javaType="Integer" jdbcType="INTEGER" property="upper"/>
+        <result column="lower" javaType="Integer" jdbcType="INTEGER" property="lower"/>
+    </resultMap>
+
+    <!--获取所有产品信息-->
+    <select id="getAllProducts" resultMap="ProductMap">
+        select * from product
+    </select>
+
+    <!--添加产品信息-->
+    <insert id="addProduct" parameterType="pinksmile.database.domain.Product">
+        insert into product (name, specification, price, upper, lower)
+        values (#{name}, #{specification}, #{price}, #{upper}, #{lower})
+    </insert>
+
+    <!--通过产品编号获取产品信息-->
+    <select id="getProductById" resultMap="ProductMap">
+        select
+        id, name, specification, price, upper, lower
+        from product
+        where id = #{id}
+    </select>
+
+    <!--修改产品信息-->
+    <update id="updateProduct" parameterType="pinksmile.database.domain.Product">
+        update product set
+        id = #{id},
+        name = #{name},
+        specification = #{specification},
+        price = #{price},
+        upper = #{upper},
+        lower = #{lower}
+        where id = #{id}
+    </update>
+
+    <!--删除一个产品-->
+    <delete id="deleteOneProduct">
+        delete from product where id = #{id}
+    </delete>
+
+    <!--删除多个产品-->
+    <delete id="deleteManyProducts">
+        delete from product where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--通过产品名查找产品-->
+    <select id="getProductByName" resultMap="ProductMap">
+        select * from product where name = #{name}
+    </select>
+
+    <select id="getUpperById" resultType="Integer">
+        select upper from product where id=#{pid}
+    </select>
+
+    <select id="getLowerById" resultType="Integer">
+        select lower from product where id=#{pid}
+    </select>
+</mapper>

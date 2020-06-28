@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>添加入库记录</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport"
+              content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/font.css')}">
+        <link rel="stylesheet" th:href="${urls.getForLookupPath('/css/xadmin.css')}">
+        <script th:src="${urls.getForLookupPath('/lib/layui/layui.js')}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="${urls.getForLookupPath('/js/xadmin.js')}"></script>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>产品编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="instockPid"
+                                   name="instockPid" required=""
+                                   lay-verify="instockPid" autocomplete="off" placeholder="请输入产品编号"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>仓库编号</label>
+                        <div class="layui-input-inline">
+                            <input id="instockRid" name="instockRid" type="text" lay-verify="instockRid"
+                                   autocomplete="off"
+                                   class="layui-input"
+                                   placeholder="请输入仓库编号">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>入库数量</label>
+                        <div class="layui-input-inline">
+                            <input id="instockAmount" name="instockAmount" type="text" lay-verify="instockAmount"
+                                   autocomplete="off"
+                                   class="layui-input"
+                                   placeholder="请输入库数量" onchange="checkIsOver()">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span id="amounttip" class="x-red" style="font-weight: bold;"></span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>入库时间</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" id="instockDate" autocomplete="off" name="instockDate"
+                                   layui-verify="instockDate" type="text" placeholder="请选择入库时间">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>经办人</label>
+                        <div class="layui-input-inline">
+                            <input id="instockName" name="instockName" type="text" lay-verify="instockName"
+                                   autocomplete="off"
+                                   class="layui-input"
+                                   placeholder="请输入经办人">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button lay-filter="add" id="addbutton" lay-submit="" class="layui-btn layui-btn-fluid">确认添加</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            layui.use(['form', 'layer', 'laydate'],
+                function () {
+                    $ = layui.jquery;
+                    var form = layui.form,
+                        layer = layui.layer, SendData,
+                        laydate = layui.laydate;
+
+                    laydate.render({
+                        elem: '#instockDate'
+                        , showBottom: false
+                        , trigger: 'click'
+                        , value: new Date()
+                        , isInitValue: true
+                    });
+
+                    //自定义验证规则
+                    form.verify({
+                        instockPid: function (value) {
+                            if (value.length === 0) {
+                                return '产品编号不能为空！';
+                            }
+                        },
+                        instockRid: function (value) {
+                            if (value.length === 0) {
+                                return '仓库编号不能为空！';
+                            }
+                        },
+                        instockAmount: function (value) {
+                            if (value.length === 0) {
+                                return '入库数量不能为空!';
+                            } else if (value <= 0) {
+                                return '入库数量要大于0!';
+                            }
+                        },
+                        instockName: function (value) {
+                            if (value.length === 0) {
+                                return '经办人不能为空!';
+                            }
+                        }
+
+                    });
+
+                    //监听提交
+                    form.on('submit(add)', function (data) {
+                        console.log(data);
+
+                        // 使用ajax传送数据
+                        SendData = $.ajax({
+                            type: "POST",
+                            url: "/usermanage/addStocking",
+                            data: {
+                                pid: data.field.instockPid,
+                                rid: data.field.instockRid,
+                                amount: data.field.instockAmount,
+                                datetime: data.field.instockDate,
+                                name: data.field.instockName,
+                            },
+
+                            success: function () {
+                                layer.alert('添加成功！', {
+                                        icon: 6
+                                    },
+                                    function () {
+                                        xadmin.father_reload();     // 对父窗口进行刷新
+                                        xadmin.close();         // 关闭当前 frame
+                                    });
+                            },
+                            error: function () {
+                                layer.alert('添加失败！', {icon: 5});
+                            }
+                        });
+                        // 等待 ajax 执行完毕
+                        $.when(SendData).done(function (value) {
+
+                        });
+                        return false;
+                    });
+
+                });
+            
+            function checkIsOver() {
+                var amount = document.getElementById('instockAmount').value;
+                var pid = document.getElementById('instockPid').value;
+                $.ajax({
+                    url: "/usermanage/checkIsOver/" + pid + "/" + amount,
+                    type: 'GET',
+                    success: function (result) {
+                        if (result === 'over'){
+                            $('#amounttip').html("入库数量太多，超过产品上限！");
+                            $('#addbutton').attr("disabled", "true");
+                        }else{
+                            $('#amounttip').html("入库数量正常！");
+                            $('#addbutton').removeAttr("disabled");
+                        }
+                    }
+                })
+            }
+        </script>
+    </body>
+
+</html>

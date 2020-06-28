@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.StockDao">
+    <resultMap id="StockMap" type="pinksmile.database.domain.Stock">
+        <result column="pid" javaType="Integer" jdbcType="INTEGER" property="pid"/>
+        <result column="rid" javaType="Integer" jdbcType="INTEGER" property="rid"/>
+        <result column="amount" javaType="Integer" jdbcType="INTEGER" property="amount"/>
+    </resultMap>
+
+    <!--获取视图表所有信息-->
+    <select id="getStockView" resultType="java.util.HashMap">
+        select * from product_repository_stock
+    </select>
+
+    <!--根据仓库名称查找库存-->
+    <select id="getStockByRepositoryName" resultType="java.util.HashMap">
+        select * from product_repository_stock where rname=#{rname}
+    </select>
+
+    <!--根据产品名称查找库存-->
+    <select id="getStockByProductName" resultType="java.util.HashMap">
+        select * from product_repository_stock where pname=#{pname}
+    </select>
+
+    <select id="getAllStocks" resultMap="StockMap">
+        select * from stock
+    </select>
+
+    <insert id="addStocks" parameterType="pinksmile.database.domain.Stock">
+        insert into stock (pid, rid, amount)
+        values (#{pid}, #{rid}, #{amount})
+    </insert>
+
+    <select id="getOneStocksByPid" resultMap="StockMap">
+        select
+        pid, rid, amount
+        from stock
+        where pid=#{pid}
+    </select>
+
+    <update id="updateStocks" parameterType="pinksmile.database.domain.Stock">
+        update stock set
+        pid = #{pid},
+        rid = #{rid},
+        amount = #{amount}
+        where pid = #{pid}
+    </update>
+
+    <delete id="deleteOneStocks">
+        delete from stock where pid=#{pid}
+    </delete>
+
+    <delete id="deleteManyStocks">
+        delete from stock where pid in
+        <foreach collection="list" item="pid" separator="," open="(" close=")">
+            #{pid}
+        </foreach>
+    </delete>
+
+    <select id="getAmountByPid" resultType="Integer">
+        select amount from stock where pid=#{pid}
+    </select>
+
+    <select id="getStocksByPid" resultMap="StockMap">
+        select * from stock where pid=#{pid}
+    </select>
+
+    <select id="getStocksByRid" resultMap="StockMap">
+        select * from stock where rid=#{rid}
+    </select>
+
+</mapper>

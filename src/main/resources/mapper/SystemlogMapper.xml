@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.SystemlogDao">
+    <resultMap id="LogMap" type="pinksmile.database.domain.SystemLog">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="username" javaType="String" jdbcType="VARCHAR" property="username"/>
+        <result column="method" javaType="String" jdbcType="VARCHAR" property="method"/>
+        <result column="describes" javaType="String" jdbcType="VARCHAR" property="describes"/>
+        <result column="time" javaType="java.util.Date" jdbcType="TIMESTAMP" property="time"/>
+    </resultMap>
+
+    <insert id="addSystemlog" parameterType="pinksmile.database.domain.SystemLog">
+        insert into syslog (username, method, describes, time)
+        values (#{username}, #{method}, #{describes}, #{time})
+    </insert>
+
+    <select id="getAllSystemlogs" resultMap="LogMap">
+        select * from syslog
+    </select>
+    
+    <select id="getLogByUsername" resultMap="LogMap">
+        select * from syslog where username=#{username}
+    </select>
+    
+    <select id="getLogByDatetime" resultMap="LogMap">
+        select * from syslog where DATE_FORMAT(time, '%Y-%m-%d') = #{time}
+    </select>
+</mapper>

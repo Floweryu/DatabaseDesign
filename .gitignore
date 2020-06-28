@@ -1,0 +1,6 @@
+target
+.idea
+.mvn
+database.jar
+out/artifacts/database/database.war
+*.class

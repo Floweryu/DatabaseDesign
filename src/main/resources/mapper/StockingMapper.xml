@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pinksmile.database.dao.StockingDao">
+    <resultMap id="StockingMap" type="pinksmile.database.domain.Stocking">
+        <result column="id" javaType="Integer" jdbcType="INTEGER" property="id"/>
+        <result column="pid" javaType="Integer" jdbcType="INTEGER" property="pid"/>
+        <result column="rid" javaType="Integer" jdbcType="INTEGER" property="rid"/>
+        <result column="amount" javaType="Integer" jdbcType="INTEGER" property="amount"/>
+        <result column="datetime" javaType="Date" jdbcType="DATE" property="datetime"/>
+        <result column="name" javaType="String" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <!--获得入库所有记录-->
+    <select id="getAllStockings" resultMap="StockingMap">
+        select * from stocking
+    </select>
+
+    <select id="getStockingById" resultMap="StockingMap">
+        select
+        id, pid, rid, amount, datetime, name
+        from stocking
+        where id=#{id}
+    </select>
+
+    <update id="updateStocking" parameterType="pinksmile.database.domain.Stocking">
+        update stocking set
+        id = #{id},
+        pid = #{pid},
+        rid = #{rid},
+        amount = #{amount},
+        datetime = #{datetime},
+        name = #{name}
+        where id = #{id}
+    </update>
+    
+    <insert id="addStocking" parameterType="pinksmile.database.domain.Stocking">
+        insert into stocking (pid, rid, amount, datetime, name)
+        values (#{pid}, #{rid}, #{amount}, #{datetime}, #{name})
+    </insert>
+
+    <select id="getStockingByPid" resultMap="StockingMap">
+        select * from stocking where pid=#{pid}
+    </select>
+
+    <select id="getStockingByRid" resultMap="StockingMap">
+        select * from stocking where rid=#{rid}
+    </select>
+
+    <select id="getStockingByTime" resultMap="StockingMap">
+        select * from stocking where datetime=#{time}
+    </select>
+
+    <delete id="deleteManyStockings">
+        delete from stocking where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOneStocking">
+        delete from stocking where id = #{id}
+    </delete>
+</mapper>
